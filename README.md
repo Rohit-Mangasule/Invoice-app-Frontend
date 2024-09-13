@@ -62,12 +62,14 @@ Ensure you have **Node.js** and **npm** installed on your machine.
     ### Start the frontend development server by running:
 
     ```bash
-    npm start
+    npm run dev
     ```
     ### The application will now be running at http://localhost:5173.
     
 
-**Test the Application**
+
+
+## Test the Application
 
 Once the frontend is running, you can test the application by visiting http://localhost:5173 in your browser. You will be able to:
 
