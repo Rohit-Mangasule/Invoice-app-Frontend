@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import CreateInvoice from './CreateInvoice';
 import ViewInvoices from './ViewInvoices';
-import Index from './index.jsx'
+import Index from './Index.jsx'
 import ViewInvoice from './viewInvoice.jsx';
 import EditInvoice from './editInvoice.jsx';
 
