@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const ViewInvoices = () => {
   const [invoices, setInvoices] = useState([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchInvoices = async () => {
       try {
@@ -44,6 +44,14 @@ const ViewInvoices = () => {
           ))}
         </tbody>
       </table>
+      <br />
+      <br />
+      <button
+        className="btn btn-primary ms-3"
+        onClick={() => navigate(`/`)}
+      >
+        Home
+      </button>
     </div>
   );
 };

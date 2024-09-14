@@ -10,12 +10,6 @@ const CreateInvoice = () => {
     items: [{ name: '', price: 0, quantity: 1, taxes: [{ title: '', rate: 0 }] }]
   });
   const navigate = useNavigate();
-  const handleChange = (e, index) => {
-    const { name, value } = e.target;
-    const items = [...invoice.items];
-    items[index][name] = value;
-    setInvoice({ ...invoice, items });
-  };
 
   const handleItemChange = (e, itemIndex, taxIndex) => {
     const { name, value } = e.target;
@@ -36,9 +30,9 @@ const CreateInvoice = () => {
   };
 
   const addTax = (itemIndex) => {
-    const items = [...invoice.items];
-    items[itemIndex].taxes.push({ title: '', rate: 0 });
-    setInvoice({ ...invoice, items });
+    const updatedItems = [...invoice.items];
+    updatedItems[itemIndex].taxes.push({ title: '', rate: '' });
+    setInvoice({ ...invoice, items: updatedItems });
   };
 
   const handleSubmit = async (e) => {

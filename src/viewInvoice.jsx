@@ -12,17 +12,22 @@ const ViewInvoice = () => {
       try {
         const response = await axios.get(`https://invoice-app-backend-zfw9.onrender.com/invoices/${id}`);
         setInvoice(response.data);
+        
       } catch (error) {
         console.error("Error fetching invoice:", error);
       }
     };
     fetchInvoice();
-  }, [id]);
+  }, [id, invoice]);
+
+  
+  
 
   // Function to print the invoice
   const printInvoice = () => {
     window.print();
   };
+
 
   if (!invoice) {
     return <p>Loading...</p>;
@@ -30,7 +35,7 @@ const ViewInvoice = () => {
 
   return (
     <div className="container mt-5">
-      <h2 className="text-center mb-4">Invoice #{invoice.invoiceNumber}</h2>
+      <h2 className="text-center mb-4">#{invoice.invoiceNumber}</h2>
       
       {/* Invoice Details */}
       <table className="table table-bordered">
@@ -45,7 +50,7 @@ const ViewInvoice = () => {
         </thead>
         <tbody>
           <tr>
-            <td>{invoice.date}</td>
+            <td>{new Date(invoice.date).toISOString().split('T')[0]}</td>
             <td>{invoice.currency}</td>
             <td>{invoice.subtotal.toFixed(2)}</td>
             <td>{invoice.totalTaxes.toFixed(2)}</td>
@@ -62,26 +67,34 @@ const ViewInvoice = () => {
             <th>Item Name</th>
             <th>Quantity</th>
             <th>Price</th>
-            <th>Taxes</th>
             <th>Item Total</th>
+            <th>Taxes</th>
+            
           </tr>
         </thead>
         <tbody>
-          {invoice.items.map((item, index) => (
-            <tr key={index}>
-              <td>{item.name}</td>
-              <td>{item.quantity}</td>
-              <td>{item.price.toFixed(2)}</td>
-              <td>
-                {item.taxes.map((tax, taxIndex) => (
-                  <div key={taxIndex}>
-                    {tax.title}: {tax.rate}% 
-                  </div>
-                ))}
-              </td>
-              <td>{(item.price * item.quantity).toFixed(2)}</td>
-            </tr>
-          ))}
+          {invoice.items.map((item, index) => {
+            const itemTotal = item.price * item.quantity;
+            const totalTaxPercentage = item.taxes.reduce((sum, tax) => sum + tax.rate, 0);
+            const totalWithTaxes = itemTotal + (itemTotal * totalTaxPercentage / 100);
+            
+            return (
+              <tr key={index}>
+                <td>{item.name}</td>
+                <td>{item.quantity}</td>
+                <td>{item.price.toFixed(2)}</td>
+                <td>{(item.price * item.quantity).toFixed(2)}</td>
+                <td>
+                  {item.taxes.map((tax, taxIndex) => (
+                    <div key={taxIndex}>
+                      {tax.title}: {tax.rate}% 
+                    </div>
+                  ))}
+                </td>
+                
+              </tr>
+            );
+          })}
         </tbody>
       </table>
 
@@ -97,6 +110,12 @@ const ViewInvoice = () => {
         onClick={() => window.print()}
       >
         Print Invoice
+      </button>
+      <button
+        className="btn btn-primary ms-3"
+        onClick={() => navigate(`/view`)}
+      >
+        Invoice List
       </button>
     </div>
   );
