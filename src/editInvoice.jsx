@@ -59,7 +59,7 @@ const EditInvoice = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const response = await axios.put(`http://invoice-app-backend-zfw9.onrender.com/invoices/${id}`, invoice);
+        const response = await axios.put(`https://invoice-app-backend-zfw9.onrender.com/invoices/${id}`, invoice);
         console.log('Response:', response);
   
         navigate(`/view/${id}`);
