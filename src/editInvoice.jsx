@@ -61,9 +61,12 @@ const EditInvoice = () => {
     try {
         const response = await axios.put(`https://invoice-app-backend-zfw9.onrender.com/invoices/${id}`, invoice);
         console.log('Response:', response);
+        // console.log('Sending request to:', `https://invoice-app-backend-zfw9.onrender.com/invoices/${id}`);
+        // console.log('Payload:', invoice);
+
   
         navigate(`/view/${id}`);
-        window.location.reload();
+        // window.location.reload();
         console.log('Updated Invoice:', invoice);
 
     } catch (error) {
