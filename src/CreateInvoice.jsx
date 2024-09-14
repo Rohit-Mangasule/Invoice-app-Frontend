@@ -112,7 +112,7 @@ const CreateInvoice = () => {
               />
             </div>
             <div className="mb-3">
-              <label htmlFor={`itemPrice-${itemIndex}`} className="form-label">Price</label>
+              <label htmlFor={`itemPrice-${itemIndex}`} className="form-labe">Price</label>
               <input
                 type="number"
                 className="form-control"
