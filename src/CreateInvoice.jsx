@@ -9,6 +9,7 @@ const CreateInvoice = () => {
     currency: '',
     items: [{ name: '', price: 0, quantity: 1, taxes: [{ title: '', rate: 0 }] }]
   });
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleItemChange = (e, itemIndex, taxIndex) => {
@@ -37,15 +38,15 @@ const CreateInvoice = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await axios.post('https://invoice-app-backend-zfw9.onrender.com/create', invoice);
-      
-      // console.log('Invoice created:', response.data);
-      
       const invoiceId = response.data._id; 
       navigate(`/view/${invoiceId}`); // Redirect to /view/:id
     } catch (error) {
       console.error('Error creating invoice:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -66,36 +67,35 @@ const CreateInvoice = () => {
           />
         </div>
         <div className="row mb-3">
-  <div className="col-md-6">
-    <label htmlFor="currency" className="form-label">Currency</label>
-    <select
-      className="form-select"
-      id="currency"
-      name="currency"
-      value={invoice.currency}
-      onChange={(e) => setInvoice({ ...invoice, currency: e.target.value })}
-      required
-    >
-      <option value="">Select Currency</option>
-      <option value="INR">INR</option>
-      <option value="USD">USD</option>
-      <option value="EUR">EUR</option>
-    </select>
-  </div>
-  
-  <div className="col-md-6">
-    <label htmlFor="date" className="form-label">Date</label>
-    <input
-      type="date"
-      className="form-control"
-      id="date"
-      name="date"
-      value={invoice.date}
-      onChange={(e) => setInvoice({ ...invoice, date: e.target.value })}
-      required
-    />
-  </div>
-</div>
+          <div className="col-md-6">
+            <label htmlFor="currency" className="form-label">Currency</label>
+            <select
+              className="form-select"
+              id="currency"
+              name="currency"
+              value={invoice.currency}
+              onChange={(e) => setInvoice({ ...invoice, currency: e.target.value })}
+              required
+            >
+              <option value="">Select Currency</option>
+              <option value="INR">INR</option>
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+            </select>
+          </div>
+          <div className="col-md-6">
+            <label htmlFor="date" className="form-label">Date</label>
+            <input
+              type="date"
+              className="form-control"
+              id="date"
+              name="date"
+              value={invoice.date}
+              onChange={(e) => setInvoice({ ...invoice, date: e.target.value })}
+              required
+            />
+          </div>
+        </div>
         <h4>Items</h4>
         {invoice.items.map((item, itemIndex) => (
           <div key={itemIndex} className="border p-3 mb-3">
@@ -135,44 +135,41 @@ const CreateInvoice = () => {
                 required
               />
             </div>
-
             <h5>Taxes</h5>
-{item.taxes.map((tax, taxIndex) => (
-  <div key={taxIndex} className="mb-3">
-    <div className="row">
-      <div className="col-md-6">
-        <label htmlFor={`taxTitle-${itemIndex}-${taxIndex}`} className="form-label">Tax Title</label>
-        <select
-          className="form-select"
-          id={`taxTitle-${itemIndex}-${taxIndex}`}
-          name="title"
-          value={tax.title}
-          onChange={(e) => handleItemChange(e, itemIndex, taxIndex)}
-          required
-        >
-          <option value="">Select Tax</option>
-          <option value="CGST">CGST</option>
-          <option value="SGST">SGST</option>
-          <option value="VAT">VAT</option>
-        </select>
-      </div>
-      
-      <div className="col-md-6">
-        <label htmlFor={`taxRate-${itemIndex}-${taxIndex}`} className="form-label">Tax Rate (%)</label>
-        <input
-          type="number"
-          className="form-control"
-          id={`taxRate-${itemIndex}-${taxIndex}`}
-          name="rate"
-          value={tax.rate}
-          onChange={(e) => handleItemChange(e, itemIndex, taxIndex)}
-          required
-        />
-      </div>
-    </div>
-  </div>
-))}
-
+            {item.taxes.map((tax, taxIndex) => (
+              <div key={taxIndex} className="mb-3">
+                <div className="row">
+                  <div className="col-md-6">
+                    <label htmlFor={`taxTitle-${itemIndex}-${taxIndex}`} className="form-label">Tax Title</label>
+                    <select
+                      className="form-select"
+                      id={`taxTitle-${itemIndex}-${taxIndex}`}
+                      name="title"
+                      value={tax.title}
+                      onChange={(e) => handleItemChange(e, itemIndex, taxIndex)}
+                      required
+                    >
+                      <option value="">Select Tax</option>
+                      <option value="CGST">CGST</option>
+                      <option value="SGST">SGST</option>
+                      <option value="VAT">VAT</option>
+                    </select>
+                  </div>
+                  <div className="col-md-6">
+                    <label htmlFor={`taxRate-${itemIndex}-${taxIndex}`} className="form-label">Tax Rate (%)</label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      id={`taxRate-${itemIndex}-${taxIndex}`}
+                      name="rate"
+                      value={tax.rate}
+                      onChange={(e) => handleItemChange(e, itemIndex, taxIndex)}
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
             <button
               type="button"
               className="btn btn-secondary"
@@ -183,18 +180,20 @@ const CreateInvoice = () => {
           </div>
         ))}
         <div className="d-flex justify-content-start mb-3">
-  <button
-    type="button"
-    className="btn btn-primary me-2"
-    onClick={addItem}
-  >
-    Add Item
-  </button>
-  <button type="submit" className="btn btn-success">
-    Create Invoice
-  </button>
-</div>
-
+          <button
+            type="button"
+            className="btn btn-primary me-2"
+            onClick={addItem}
+          >
+            Add Item
+          </button>
+          <button type="submit" className="btn btn-success">
+            {loading ? 'Creating...' : 'Create Invoice'}
+          </button>
+        </div>
+        {loading && <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>}
       </form>
     </div>
   );
