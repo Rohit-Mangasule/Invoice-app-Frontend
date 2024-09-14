@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const CreateInvoice = () => {
   const [invoice, setInvoice] = useState({
@@ -8,7 +9,7 @@ const CreateInvoice = () => {
     currency: '',
     items: [{ name: '', price: 0, quantity: 1, taxes: [{ title: '', rate: 0 }] }]
   });
-
+  const navigate = useNavigate();
   const handleChange = (e, index) => {
     const { name, value } = e.target;
     const items = [...invoice.items];
@@ -44,8 +45,11 @@ const CreateInvoice = () => {
     e.preventDefault();
     try {
       const response = await axios.post('https://invoice-app-backend-zfw9.onrender.com/create', invoice);
-      console.log('Invoice created:', response.data);
-      // Redirect or show success message
+      
+      // console.log('Invoice created:', response.data);
+      
+      const invoiceId = response.data._id; 
+      navigate(`/view/${invoiceId}`); // Redirect to /view/:id
     } catch (error) {
       console.error('Error creating invoice:', error);
     }
