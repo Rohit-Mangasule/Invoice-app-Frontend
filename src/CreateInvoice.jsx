@@ -56,7 +56,7 @@ const CreateInvoice = () => {
       <h2>Create Invoice</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label htmlFor="invoiceNumber" className="form-label">Customer Name</label>
+          <label htmlFor="invoiceNumber" className="form-label">Invoice Name</label>
           <input
             type="text"
             className="form-control"
