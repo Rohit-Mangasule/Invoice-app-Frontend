@@ -11,7 +11,7 @@ const EditInvoice = () => {
   useEffect(() => {
     const fetchInvoice = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/invoices/${id}`);
+        const response = await axios.get(`http://invoice-app-backend-zfw9.onrender.com/invoices/${id}`);
         setInvoice(response.data);
       } catch (error) {
         console.error('Error fetching the invoice:', error);
@@ -59,7 +59,7 @@ const EditInvoice = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const response = await axios.put(`http://localhost:8080/invoices/${id}`, invoice);
+        const response = await axios.put(`http://invoice-app-backend-zfw9.onrender.com/invoices/${id}`, invoice);
         console.log('Response:', response);
   
         navigate(`/view/${id}`);

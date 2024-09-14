@@ -43,7 +43,7 @@ const CreateInvoice = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8080/create', invoice);
+      const response = await axios.post('https://invoice-app-backend-zfw9.onrender.com/create', invoice);
       console.log('Invoice created:', response.data);
       // Redirect or show success message
     } catch (error) {

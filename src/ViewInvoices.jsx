@@ -8,7 +8,7 @@ const ViewInvoices = () => {
   useEffect(() => {
     const fetchInvoices = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/invoices'); // Fetching data from backend
+        const response = await axios.get('http://invoice-app-backend-zfw9.onrender.com/invoices'); // Fetching data from backend
         setInvoices(response.data);
       } catch (error) {
         console.error('Error fetching invoices:', error);
