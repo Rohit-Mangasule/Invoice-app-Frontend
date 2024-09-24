@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  backend:
+    image: rohitmangasule/invflow-docker:latest
+    ports:
+      - "8080:8080"
+
+  frontend:
+    image: rohitmangasule/invflow-frontend-app:latest
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
